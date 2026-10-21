@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PuzzleFrame Studio — AI Math Shorts Production Suite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/studio.css">
+</head>
+<body>
+  <!-- Ambient Studio Lighting -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-mark">
+        <svg class="sparkle-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">PUZZLEFRAME <span class="badge-pro">STUDIO</span></div>
+        <div class="brand-tagline">Autonomous Faceless Math Reels Generator · 1080 × 1920</div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="channel-pill">
+        <span class="pulse-dot"></span>
+        <span>YT: <strong>Bloxxerman1</strong> · IG: <strong>@Mysteryuntoldd</strong></span>
+      </div>
+      <div class="engine-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        <span>HyperFrames v0.8 Engine Ready</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="btn btn-secondary btn-sm" id="btn-roll-fresh-top">
+        <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        <span>Roll 8 Fresh Puzzles</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Dual Workspace -->
+  <main class="studio-layout">
+    <!-- LEFT PANEL: Puzzle Picker & Generator Controls -->
+    <section class="panel panel-inputs">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Choose A Math Puzzle</h1>
+          <p class="panel-subtitle">Select from curated primary-level paradoxes or roll for fresh new variations</p>
+        </div>
+        <button class="btn btn-primary-outline" id="btn-roll-fresh">
+          <svg class="dice-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+            <circle cx="8" cy="8" r="1.5" fill="currentColor"></circle>
+            <circle cx="16" cy="8" r="1.5" fill="currentColor"></circle>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+            <circle cx="8" cy="16" r="1.5" fill="currentColor"></circle>
+            <circle cx="16" cy="16" r="1.5" fill="currentColor"></circle>
+          </svg>
+          <span>Surprise Me / Roll New</span>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="studio-nav-tabs">
+        <button class="nav-tab active" id="tab-btn-templates" data-view="templates">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>Active Reel Templates</span>
+          <span class="tab-badge">8 Ready</span>
+        </button>
+        <button class="nav-tab nav-tab-glow" id="tab-btn-ideas" data-view="ideas">
+          <svg class="sparkle-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+          </svg>
+          <span>💡 Generate New Ideas</span>
+          <span class="tab-badge-new">AI LAB</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-history" data-view="history">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+          <span>📼 Output Gallery</span>
+          <span class="tab-badge" id="badge-history-count">3</span>
+        </button>
+      </div>
+
+      <!-- VIEW 1: ACTIVE TEMPLATES -->
+      <div class="tab-view active-view" id="view-templates">
+        <!-- Category Filter Pills -->
+        <div class="category-filters" id="category-filters">
+          <button class="filter-chip active" data-category="all">All Topics</button>
+          <button class="filter-chip" data-category="geometry">🍕 Geometry</button>
+          <button class="filter-chip" data-category="arithmetic">⚡ Speed Math</button>
+          <button class="filter-chip" data-category="percentages">🏷️ Percentages</button>
+          <button class="filter-chip" data-category="counting">📐 Counting</button>
+          <button class="filter-chip" data-category="probability">🎂 Probability</button>
+        </div>
+
+        <!-- Puzzle Options Grid (7-8 Cards) -->
+        <div class="puzzles-grid" id="puzzles-grid">
+          <!-- Rendered dynamically by studio.js -->
+          <div class="loading-cards">
+            <div class="spinner"></div>
+            <span>Loading curated math paradoxes...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: DEDICATED IDEA GENERATOR TAB -->
+      <div class="tab-view" id="view-ideas" style="display: none;">
+        <div class="ideas-hero-card">
+          <div class="ideas-hero-left">
+            <div class="hero-tag">🧠 CONCEPT DISCOVERY ENGINE</div>
+            <h2 class="ideas-hero-title">Synthesize Viral Math Paradox Ideas</h2>
+            <p class="ideas-hero-desc">Click to generate fresh hook-first math mysteries tailored for Instagram Reels & TikTok Shorts.</p>
+          </div>
+          <button class="btn btn-primary-gradient" id="btn-generate-more-ideas">
+            <svg class="spin-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            <span>Generate 8 Fresh Ideas</span>
+          </button>
+        </div>
+
+        <!-- Grid of Freshly Generated Ideas -->
+        <div class="ideas-grid" id="ideas-grid">
+          <!-- Populated dynamically when tab is clicked -->
+        </div>
+      </div>
+
+      <!-- VIEW 3: OUTPUT GALLERY / PREVIOUS RENDERS -->
+      <div class="tab-view" id="view-history" style="display: none;">
+        <div class="ideas-hero-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.2)); border-color: rgba(16, 185, 129, 0.3);">
+          <div class="ideas-hero-left">
+            <div class="hero-tag" style="color: #34d399;">📁 RENDER VAULT & DOWNLOADS</div>
+            <h2 class="ideas-hero-title">Earlier Generated Video Outputs</h2>
+            <p class="ideas-hero-desc">Inspect, play back in the stage mockup, and download your rendered MP4 video reels.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-refresh-history">
+            <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            <span>Refresh Outputs</span>
+          </button>
+        </div>
+
+        <!-- Grid of Rendered MP4 Video Outputs -->
+        <div class="history-grid" id="history-grid">
+          <!-- Populated dynamically when tab is clicked -->
+        </div>
+      </div>
+
+      <!-- Customization & Parameters Accordion -->
+      <div class="customizer-card">
+        <div class="customizer-toggle" id="customizer-toggle">
+          <div class="customizer-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <span>Customize Selected Puzzle Variables</span>
+          </div>
+          <span class="customizer-arrow" id="customizer-arrow">▼</span>
+        </div>
+
+        <div class="customizer-body" id="customizer-body" style="display: none;">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Hook Question</label>
+              <input type="text" id="cust-hook-title" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Handwritten Hook</label>
+              <input type="text" id="cust-handwritten-hook" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>⏱️ 5-to-1 Countdown Timer Prompt</label>
+              <input type="text" id="cust-countdown-heading" class="form-input" placeholder="Comment your guess before time runs out!">
+            </div>
+            <div class="form-group flex-1">
+              <label>▶ YouTube Channel</label>
+              <input type="text" id="cust-youtube-handle" class="form-input" placeholder="Bloxxerman1">
+            </div>
+            <div class="form-group flex-1">
+              <label>📸 Instagram Handle</label>
+              <input type="text" id="cust-instagram-handle" class="form-input" placeholder="Mysteryuntoldd">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>👶 10-Year-Old Trick Heading</label>
+              <input type="text" id="cust-kid-heading" class="form-input" placeholder="2× Width × 2× Height = 4× Pizza!">
+            </div>
+            <div class="form-group flex-2">
+              <label>👶 10-Year-Old Simple Explanation</label>
+              <input type="text" id="cust-kid-text" class="form-input" placeholder="When a circle gets 2 times wider, it ALSO gets 2 times taller: 2 × 2 = 4!">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Visual Question / Step</label>
+              <input type="text" id="cust-test-question" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Payoff Line</label>
+              <input type="text" id="cust-proof-count-text" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Formula Title</label>
+              <input type="text" id="cust-formula-title" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Core Rule Summary</label>
+              <input type="text" id="cust-rule-title" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Aha Takeaway Headline</label>
+              <input type="text" id="cust-aha-title" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Aha Emoji</label>
+              <input type="text" id="cust-aha-emoji" class="form-input" style="max-width: 120px;">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>🎵 Matching Background Score Track</label>
+              <select id="cust-bgm-theme" class="form-input" style="font-weight: 700; cursor: pointer;">
+                <option value="curious_mystery">🕵️ Curious Mystery (Playful Marimba & Plucks — Adaptive 37s Arc)</option>
+                <option value="clockwork_tension">⏱️ Clockwork Tension (Rhythmic Ticking & Suspense Pulse)</option>
+                <option value="playful_discovery">🌟 Playful Discovery (Joyful Bells & Upbeat Educational Bounce)</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label>🎧 Audio Design</label>
+              <div class="specs-pill" style="height: 44px; display: flex; align-items: center; justify-content: center; font-size: 13px; margin: 0; background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;">
+                <span>Narrative Scene Sync</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Sticky Bar -->
+      <div class="render-action-bar">
+        <div class="action-info">
+          <div class="selected-summary">
+            Selected: <span id="summary-puzzle-title">Loading...</span>
+          </div>
+          <div class="specs-pill">
+            <span>37.0s Reel (Paced & Clear Step-by-Step)</span> · <span>30 FPS</span> · <span>1080×1920 MP4</span>
+          </div>
+        </div>
+        <button class="btn btn-render" id="btn-initiate-render">
+          <svg class="bolt-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>INITIATE RENDER & PRODUCE MP4</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: Device Mockup, Real-time Pipeline HUD & Video Player -->
+    <section class="panel panel-stage">
+      <div class="stage-container">
+        
+        <!-- iPhone 16 Pro Frame Shell -->
+        <div class="device-mockup">
+          <div class="device-notch">
+            <div class="notch-camera"></div>
+            <div class="notch-island"></div>
+          </div>
+
+          <!-- Stage State 1: Live Interactive Composition Preview -->
+          <div class="screen-view" id="screen-preview">
+            <iframe id="preview-iframe" src="/composition/preview" title="Composition Preview"></iframe>
+            <div class="screen-overlay-badge">LIVE COMPOSITION PREVIEW</div>
+          </div>
+
+          <!-- Stage State 2: Active Render HUD -->
+          <div class="screen-view screen-hud" id="screen-hud" style="display: none;">
+            <div class="hud-content">
+              <div class="hud-radar">
+                <div class="radar-circle circle-1"></div>
+                <div class="radar-circle circle-2"></div>
+                <div class="hud-pct" id="hud-percentage">0%</div>
+              </div>
+
+              <div class="hud-phase-label" id="hud-phase">Initializing Render Pipeline...</div>
+
+              <div class="hud-progress-track">
+                <div class="hud-progress-bar" id="hud-bar" style="width: 5%;"></div>
+              </div>
+
+              <div class="hud-metrics">
+                <div class="metric-box">
+                  <span class="m-label">Frames</span>
+                  <span class="m-val" id="hud-frames">0 / 1110</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-label">Elapsed</span>
+                  <span class="m-val" id="hud-time">00:00</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-label">Resolution</span>
+                  <span class="m-val">1080×1920</span>
+                </div>
+              </div>
+
+              <!-- Terminal Logs Console -->
+              <div class="hud-terminal-wrap">
+                <div class="terminal-header">
+                  <span>Engine Output</span>
+                  <span class="terminal-dot"></span>
+                </div>
+                <div class="terminal-body" id="hud-log">
+                  <div>[HyperFrames] Initializing headless render container...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage State 3: Final Output MP4 Video Player -->
+          <div class="screen-view screen-player" id="screen-player" style="display: none;">
+            <video id="final-video-player" playsinline loop controls>
+              <source id="video-source" src="/video/default" type="video/mp4">
+            </video>
+            <div class="player-top-tag">
+              <span class="rec-dot"></span>
+              <span>MP4 RENDER READY · 🔊 SOUND ON</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage Interactive Preview Controls (Play, Scrub, Scene Jump) -->
+        <div class="stage-preview-controls" id="stage-preview-controls">
+          <div class="preview-transport-row">
+            <button class="btn-preview-transport" id="btn-preview-play" title="Play / Pause Animation">
+              <svg id="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <svg id="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            </button>
+            <input type="range" class="preview-scrubber" id="preview-scrubber" min="0" max="37" step="0.1" value="0.5">
+            <span class="preview-time-display" id="preview-time-display">00:00.5</span>
+          </div>
+          <div class="preview-scenes-bar">
+            <button class="scene-jump-chip active" data-time="0.5">🎯 1. Hook (0s)</button>
+            <button class="scene-jump-chip" data-time="8.0">⏱️ 2. Timer (7s)</button>
+            <button class="scene-jump-chip" data-time="17.0">💡 3. Proof (14s)</button>
+            <button class="scene-jump-chip" data-time="27.0">📐 4. Rule (24s)</button>
+            <button class="scene-jump-chip" data-time="33.5">📢 5. Outro (32s)</button>
+          </div>
+        </div>
+
+        <!-- Output Action Control Panel (Appears once rendered) -->
+        <div class="output-controls" id="output-controls">
+          <div class="success-banner" id="success-banner">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <div>
+              <div class="success-title">Video Rendered Successfully!</div>
+              <div class="success-details" id="success-metrics">37.0s · 1080×1920 · 30 FPS · H.264 MP4</div>
+            </div>
+          </div>
+
+          <div class="download-button-row">
+            <a id="btn-download-mp4" href="/puzzle-output.mp4" download="math-puzzle-reel.mp4" class="btn btn-download">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>DOWNLOAD MP4 VIDEO</span>
+            </a>
+
+            <button class="btn btn-secondary btn-icon-only" id="btn-copy-link" title="Copy Video Link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+
+            <button class="btn btn-secondary btn-icon-only" id="btn-replay" title="Replay Video">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            </button>
+          </div>
+
+          <!-- Stage Social Post Metadata Tab (Below Created Video) -->
+          <div class="stage-social-tab is-open" id="stage-social-tab" style="display: none;"></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="/studio.js"></script>
+</body>
+</html>

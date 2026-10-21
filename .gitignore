@@ -1,0 +1,17 @@
+# Node & Dependencies
+node_modules/
+npm-debug.log*
+
+# Rendered Video Outputs (large MP4 binaries)
+renders/*.mp4
+*.mp4
+*.hf-transaction*
+
+# HyperFrames Cache & Runtime Locks
+.hyperframes/
+.current-vars.json
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

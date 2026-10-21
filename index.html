@@ -1,0 +1,1213 @@
+<!doctype html>
+<html lang="en"
+  data-composition-variables='[
+    {"id":"badge_text","type":"string","label":"Mystery Tag","default":"Curious Math Mystery #01"},
+    {"id":"handwritten_hook","type":"string","label":"Handwritten Hook","default":"Wait... is this real?"},
+    {"id":"hook_title","type":"string","label":"Hook Question","default":"Is a 16-inch pizza really just double an 8-inch?"},
+    {"id":"countdown_heading","type":"string","label":"Countdown Question","default":"Comment your guess before time runs out!"},
+    {"id":"kid_explainer_heading","type":"string","label":"Kid Rule Heading","default":"2× Width × 2× Height = 4× Pizza!"},
+    {"id":"kid_explainer_text","type":"string","label":"Kid Rule Text","default":"When a circle gets 2 times wider, it also gets 2 times taller: 2 × 2 = 4!"},
+    {"id":"test_badge","type":"string","label":"Proof Stage Badge","default":"10-Year-Old Solution"},
+    {"id":"test_question","type":"string","label":"Proof Question","default":"How many 8-inch pizzas fit inside?"},
+    {"id":"proof_count_text","type":"string","label":"Proof Payoff Line","default":"Not 2... but exactly 4!"},
+    {"id":"item_1_label","type":"string","label":"Item 1 Label","default":"8-inch #1"},
+    {"id":"item_2_label","type":"string","label":"Item 2 Label","default":"8-inch #2"},
+    {"id":"item_3_label","type":"string","label":"Item 3 Label","default":"8-inch #3"},
+    {"id":"item_4_label","type":"string","label":"Item 4 Label","default":"8-inch #4"},
+    {"id":"formula_badge","type":"string","label":"Formula Badge","default":"The Secret Rule"},
+    {"id":"formula_title","type":"string","label":"Formula Title","default":"Area Grows By The Square"},
+    {"id":"card1_title","type":"string","label":"Card 1 Title","default":"8-inch (Radius = 4)"},
+    {"id":"card1_val","type":"string","label":"Card 1 Value","default":"~50 in²"},
+    {"id":"card1_sub","type":"string","label":"Card 1 Subtitle","default":"π × 4² = 16π"},
+    {"id":"card2_title","type":"string","label":"Card 2 Title","default":"16-inch (Radius = 8)"},
+    {"id":"card2_val","type":"string","label":"Card 2 Value","default":"~201 in²"},
+    {"id":"card2_sub","type":"string","label":"Card 2 Subtitle","default":"π × 8² = 64π"},
+    {"id":"rule_title","type":"string","label":"Rule Title","default":"Double Diameter = 4× Area!"},
+    {"id":"rule_body","type":"string","label":"Rule Body","default":"Because 2² = 4 times the food!"},
+    {"id":"aha_emoji","type":"string","label":"Aha Emoji","default":"🤯🍕"},
+    {"id":"aha_title","type":"string","label":"Aha Title","default":"1 Big = 4 Small!"},
+    {"id":"aha_subtitle","type":"string","label":"Aha Subtitle","default":"Never trade one 16-inch for two 8-inch pizzas!"},
+    {"id":"youtube_handle","type":"string","label":"YouTube Channel","default":"Bloxxerman1"},
+    {"id":"instagram_handle","type":"string","label":"Instagram Handle","default":"Mysteryuntoldd"},
+    {"id":"channel_handle","type":"string","label":"Channel Handle","default":"YouTube: Bloxxerman1 • Instagram: Mysteryuntoldd"},
+    {"id":"bgm_theme","type":"string","label":"Background Score","default":"curious_mystery"},
+    {"id":"bgm_src","type":"string","label":"Background Audio Track Source","default":"assets/curious_mystery.mp3"}
+  ]'>
+<head>
+  <meta charset="utf-8">
+  <title>HyperFrames Reusable Math Puzzle Reel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 1080px;
+      height: 1920px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    #root {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      color: #0f172a;
+      user-select: none;
+      background-color: #f8fafc;
+    }
+
+    /* Graph paper grid background */
+    .bg-canvas {
+      position: absolute;
+      inset: 0;
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(#cbd5e1 1.2px, transparent 1.2px),
+        linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+      background-size: 32px 32px, 32px 32px, 32px 32px;
+      z-index: 0;
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Persistent Branding */
+    .brand-top {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .brand-pill {
+      background: #0f2942;
+      color: #ffffff;
+      padding: 10px 26px;
+      border-radius: 999px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      box-shadow: 0 8px 24px rgba(15, 41, 66, 0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-social-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .brand-social-chip.yt {
+      color: #ff4d4d;
+    }
+
+    .brand-social-chip.yt span {
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .brand-social-chip.ig {
+      color: #f472b6;
+    }
+
+    .brand-social-chip.ig span {
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .brand-sep {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+
+    .brand-icon-svg {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .brand-sub {
+      font-size: 22px;
+      font-weight: 700;
+      color: #334155;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-watermark {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #475569;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+
+    /* Scene Layouts */
+    .scene-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 150px 60px 130px;
+      text-align: center;
+    }
+
+    .hook-badge {
+      display: inline-block;
+      background: #fef3c7;
+      border: 3px solid #f59e0b;
+      color: #92400e;
+      padding: 10px 26px;
+      border-radius: 40px;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hook-title {
+      font-size: 64px;
+      line-height: 1.15;
+      font-weight: 900;
+      color: #0f2942;
+      margin-bottom: 24px;
+      max-width: 940px;
+    }
+
+    .handwritten-tag {
+      font-family: 'Caveat', cursive;
+      font-size: 52px;
+      color: #2563eb;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .comparison-stage {
+      position: relative;
+      width: 720px;
+      height: 720px;
+      margin: 20px auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .big-container-circle {
+      position: absolute;
+      width: 680px;
+      height: 680px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fffbeb 0%, #fef3c7 65%, #fde68a 100%);
+      border: 14px dashed #f59e0b;
+      box-shadow: 0 25px 60px rgba(245, 158, 11, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .big-label {
+      position: absolute;
+      top: 32px;
+      background: #0f2942;
+      color: #ffffff;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 30px;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .sub-item {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ecfdf5 0%, #d1fae5 70%, #a7f3d0 100%);
+      border: 8px solid #10b981;
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .sub-item-label {
+      font-size: 26px;
+      font-weight: 800;
+      color: #065f46;
+    }
+
+    .sub-item-number {
+      font-size: 54px;
+      font-weight: 900;
+      color: #047857;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    .pos-p1 { top: 35px; left: 35px; }
+    .pos-p2 { top: 35px; right: 35px; }
+    .pos-p3 { bottom: 35px; left: 35px; }
+    .pos-p4 { bottom: 35px; right: 35px; }
+
+    /* =========================================================
+       SCENE 2: 5-to-1 Countdown Timer Styles
+       ========================================================= */
+    .countdown-badge {
+      display: inline-block;
+      background: #fee2e2;
+      border: 3px solid #ef4444;
+      color: #991b1b;
+      padding: 10px 32px;
+      border-radius: 40px;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .countdown-heading {
+      font-size: 58px;
+      line-height: 1.2;
+      font-weight: 900;
+      color: #0f2942;
+      max-width: 920px;
+      margin-bottom: 30px;
+    }
+
+    .countdown-timer-box {
+      position: relative;
+      width: 440px;
+      height: 440px;
+      margin: 20px auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .countdown-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .timer-bg-circle {
+      fill: #ffffff;
+      stroke: #e2e8f0;
+      stroke-width: 16px;
+    }
+
+    .timer-progress-ring {
+      fill: transparent;
+      stroke: #ef4444;
+      stroke-width: 16px;
+      stroke-linecap: round;
+      stroke-dasharray: 552.9; /* 2 * PI * 88 */
+      stroke-dashoffset: 0;
+    }
+
+    .countdown-numbers-stack {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .count-num {
+      position: absolute;
+      font-size: 170px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1;
+      opacity: 0;
+      transform: scale(0.3);
+      text-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .countdown-hint {
+      font-size: 32px;
+      font-weight: 800;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 12px 34px;
+      border-radius: 999px;
+      border: 2px dashed #94a3b8;
+    }
+
+    .times-up-banner {
+      margin-top: 24px;
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 34px;
+      font-weight: 900;
+      padding: 16px 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4);
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    /* =========================================================
+       SCENE 3: 10-Year-Old Explanation Styles
+       ========================================================= */
+    .kid-explainer-banner {
+      width: 100%;
+      max-width: 900px;
+      background: #eff6ff;
+      border: 3px solid #3b82f6;
+      border-radius: 26px;
+      padding: 22px 28px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-align: left;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.12);
+    }
+
+    .kid-explainer-icon {
+      font-size: 52px;
+      line-height: 1;
+    }
+
+    .kid-explainer-text h3 {
+      font-size: 30px;
+      font-weight: 900;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+
+    .kid-explainer-text p {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1d4ed8;
+      line-height: 1.3;
+    }
+
+    /* Formula Cards */
+    .formula-card-wrap {
+      width: 100%;
+      max-width: 940px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .formula-box {
+      background: #ffffff;
+      border-radius: 30px;
+      padding: 32px 24px;
+      border: 3px solid #e2e8f0;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .formula-box.winner {
+      border: 4px solid #10b981;
+      background: #f0fdf4;
+      box-shadow: 0 20px 45px rgba(16, 185, 129, 0.15);
+    }
+
+    .formula-size {
+      font-size: 28px;
+      font-weight: 800;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .formula-area {
+      font-size: 50px;
+      font-weight: 900;
+      color: #0f2942;
+      margin-bottom: 6px;
+    }
+
+    .formula-calc {
+      font-size: 26px;
+      font-weight: 700;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 6px 18px;
+      border-radius: 20px;
+    }
+
+    .rule-banner {
+      width: 100%;
+      max-width: 940px;
+      background: #0f2942;
+      color: #ffffff;
+      border-radius: 28px;
+      padding: 30px 36px;
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 20px 40px rgba(15, 41, 66, 0.25);
+    }
+
+    .rule-title {
+      font-size: 40px;
+      font-weight: 900;
+      color: #fbbf24;
+      letter-spacing: 0.5px;
+    }
+
+    .rule-body {
+      font-size: 30px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+
+    /* =========================================================
+       SCENE 5: Final Frame - Like, Subscribe & Handle Styles
+       ========================================================= */
+    .channel-avatar-glow {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .channel-avatar-glow::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+      filter: blur(14px);
+      opacity: 0.85;
+    }
+
+    .channel-avatar-circle {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 6px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .avatar-icon {
+      font-size: 80px;
+      line-height: 1;
+    }
+
+    .channel-card {
+      width: 100%;
+      max-width: 860px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .social-channels-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .social-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 22px;
+      background: #ffffff;
+      border-radius: 24px;
+      border: 3px solid #e2e8f0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    .social-box.yt-box {
+      border-color: #fee2e2;
+    }
+
+    .social-box.ig-box {
+      border-color: #fce7f3;
+    }
+
+    .social-badge-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .social-badge-icon.yt-icon {
+      background: #ff0000;
+      color: #ffffff;
+    }
+
+    .social-badge-icon.ig-icon {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #ffffff;
+    }
+
+    .social-badge-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .social-text-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .social-platform-title {
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #0f172a;
+    }
+
+    .social-handle-text {
+      font-size: 30px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .verified-badge.mini {
+      width: 26px;
+      height: 26px;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .channel-subtext {
+      font-size: 26px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .cta-subscribe-box {
+      width: 100%;
+      max-width: 840px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 22px 30px;
+      border-radius: 28px;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border: none;
+    }
+
+    .like-btn {
+      background: #ffffff;
+      color: #e11d48;
+      border: 4px solid #fecdd3;
+    }
+
+    .sub-btn {
+      background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+      color: #ffffff;
+      border: 4px solid #fda4af;
+      box-shadow: 0 18px 40px rgba(225, 29, 72, 0.4);
+    }
+
+    .comment-callout-card {
+      width: 100%;
+      max-width: 840px;
+      background: #ffffff;
+      border: 3px dashed #cbd5e1;
+      border-radius: 24px;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-align: left;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .callout-emoji {
+      font-size: 48px;
+      line-height: 1;
+    }
+
+    .callout-text strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .callout-text span {
+      font-size: 24px;
+      font-weight: 700;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="root" 
+       data-composition-id="puzzle-reel" 
+       data-width="1080" 
+       data-height="1920" 
+       data-duration="37" 
+       data-start="0">
+
+    <div class="bg-canvas"></div>
+
+    <!-- Permanent Header Branding -->
+    <div id="clip-branding" class="clip" data-start="0" data-duration="37" data-track-index="0">
+      <div class="brand-top">
+        <div class="brand-pill">
+          <div class="brand-social-chip yt">
+            <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span data-var-text="youtube_handle">Bloxxerman1</span>
+          </div>
+          <span class="brand-sep" data-contrast-ignore="true">•</span>
+          <div class="brand-social-chip ig">
+            <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <span data-var-text="instagram_handle">Mysteryuntoldd</span>
+          </div>
+        </div>
+        <div class="brand-sub">maths puzzles for curious families</div>
+      </div>
+      <div class="footer-watermark">Can you spot the math trick?</div>
+    </div>
+
+    <!-- SCENE 1: Hook & Problem Presentation (0s - 7.0s) -->
+    <div id="clip-hook" class="clip" data-start="0" data-duration="7" data-track-index="1">
+      <div class="scene-content" id="hook-content">
+        <span class="hook-badge" data-var-text="badge_text" id="ui-badge-text">Curious Math Mystery #01</span>
+        <span class="handwritten-tag" data-var-text="handwritten_hook" id="ui-handwritten-hook">Wait... is this real?</span>
+        <h1 class="hook-title" data-var-text="hook_title" id="ui-hook-title">
+          Is a 16-inch pizza really just double an 8-inch?
+        </h1>
+
+        <div class="comparison-stage">
+          <div class="big-container-circle" id="hook-big-circle">
+            <span class="big-label" data-layout-allow-occlusion="true">16″ Master</span>
+            <div class="sub-item" id="hook-small-preview">
+              <span class="sub-item-label">8″ Slice</span>
+              <span class="sub-item-number">½ ?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 2: 5-to-1 Countdown Timer Challenge (7.0s - 14.0s) -->
+    <div id="clip-countdown" class="clip" data-start="7" data-duration="7" data-track-index="1">
+      <div class="scene-content" id="countdown-content">
+        <div class="countdown-badge">⏱️ CAN YOU SOLVE IT?</div>
+        <h2 class="countdown-heading" data-var-text="countdown_heading" id="ui-countdown-heading">
+          Comment your guess before time runs out!
+        </h2>
+
+        <div class="countdown-timer-box">
+          <svg class="countdown-svg" viewBox="0 0 200 200">
+            <circle class="timer-bg-circle" cx="100" cy="100" r="88"></circle>
+            <circle id="timer-progress-ring" class="timer-progress-ring" cx="100" cy="100" r="88"></circle>
+          </svg>
+
+          <div class="countdown-numbers-stack">
+            <span class="count-num" id="cnt-5">5</span>
+            <span class="count-num" id="cnt-4">4</span>
+            <span class="count-num" id="cnt-3">3</span>
+            <span class="count-num" id="cnt-2">2</span>
+            <span class="count-num" id="cnt-1">1</span>
+          </div>
+        </div>
+
+        <div class="countdown-hint">
+          <span>👇 Type your guess in the comments!</span>
+        </div>
+        <div class="times-up-banner" id="times-up-banner">
+          🔥 TIME'S UP! HERE IS THE SOLUTION 👇
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: 10-Year-Old Friendly Solution & Step-by-Step Proof (14.0s - 24.0s) -->
+    <div id="clip-proof" class="clip" data-start="14" data-duration="10" data-track-index="1">
+      <div class="scene-content" id="proof-content">
+        <span class="hook-badge" data-var-text="test_badge" id="ui-test-badge">10-Year-Old Solution</span>
+
+        <!-- Simple 10-year-old explanation callout -->
+        <div class="kid-explainer-banner" id="kid-banner">
+          <div class="kid-explainer-icon">💡</div>
+          <div class="kid-explainer-text">
+            <h3 data-var-text="kid_explainer_heading" id="ui-kid-heading">2× Width × 2× Height = 4× Pizza!</h3>
+            <p data-var-text="kid_explainer_text" id="ui-kid-text">When a circle gets 2 times wider, it also gets 2 times taller: 2 × 2 = 4!</p>
+          </div>
+        </div>
+
+        <div class="comparison-stage">
+          <div class="big-container-circle" id="proof-big-circle">
+            <span class="big-label" data-layout-allow-occlusion="true">Inside The 16″ Circle</span>
+            
+            <div class="sub-item pos-p1" id="item-p1">
+              <span class="sub-item-label" data-var-text="item_1_label" id="ui-item-1-label">8-inch</span>
+              <span class="sub-item-number">#1</span>
+            </div>
+
+            <div class="sub-item pos-p2" id="item-p2">
+              <span class="sub-item-label" data-var-text="item_2_label" id="ui-item-2-label">8-inch</span>
+              <span class="sub-item-number">#2</span>
+            </div>
+
+            <div class="sub-item pos-p3" id="item-p3">
+              <span class="sub-item-label" data-var-text="item_3_label" id="ui-item-3-label">8-inch</span>
+              <span class="sub-item-number">#3</span>
+            </div>
+
+            <div class="sub-item pos-p4" id="item-p4">
+              <span class="sub-item-label" data-var-text="item_4_label" id="ui-item-4-label">8-inch</span>
+              <span class="sub-item-number">#4</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="handwritten-tag" id="proof-count-shout" style="font-size: 56px; color: #10b981; margin-top: 15px;" data-var-text="proof_count_text">
+          Not 2... but exactly 4!
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 4: The Math Rule & Winner Breakdown (24.0s - 32.0s) -->
+    <div id="clip-math" class="clip" data-start="24" data-duration="8" data-track-index="1">
+      <div class="scene-content" id="math-content">
+        <span class="hook-badge" data-var-text="formula_badge" id="ui-formula-badge">The Secret Rule</span>
+        <h2 class="hook-title" style="font-size: 56px; margin-bottom: 20px;" data-var-text="formula_title" id="ui-formula-title">
+          Area Grows By The Square
+        </h2>
+
+        <div class="formula-card-wrap">
+          <div class="formula-box" id="formula-left">
+            <div class="formula-size" data-var-text="card1_title" id="ui-card1-title">8-inch (Radius = 4)</div>
+            <div class="formula-area" data-var-text="card1_val" id="ui-card1-val">~50 in²</div>
+            <div class="formula-calc" data-var-text="card1_sub" id="ui-card1-sub">π × 4² = 16π</div>
+          </div>
+
+          <div class="formula-box winner" id="formula-right">
+            <div class="formula-size" data-var-text="card2_title" id="ui-card2-title">16-inch (Radius = 8)</div>
+            <div class="formula-area" style="color: #059669;" data-var-text="card2_val" id="ui-card2-val">~201 in²</div>
+            <div class="formula-calc" style="background: #dcfce7; color: #15803d;" data-var-text="card2_sub" id="ui-card2-sub">π × 8² = 64π</div>
+          </div>
+        </div>
+
+        <div class="rule-banner" id="math-banner">
+          <div class="rule-title" data-var-text="rule_title" id="ui-rule-title">Double Diameter = 4× Area!</div>
+          <div class="rule-body" data-var-text="rule_body" id="ui-rule-body">
+            Because 2² = 4 times the food!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 5: Final Frame - Like, Subscribe & Handle Details (32.0s - 37.0s) -->
+    <div id="clip-subscribe" class="clip" data-start="32" data-duration="5" data-track-index="1">
+      <div class="scene-content" id="subscribe-content">
+        <div class="channel-avatar-glow" id="avatar-glow">
+          <div class="channel-avatar-circle">
+            <span class="avatar-icon" data-contrast-ignore="true">🧠</span>
+          </div>
+        </div>
+
+        <div class="channel-card" id="channel-card">
+          <div class="social-channels-grid">
+            <div class="social-box yt-box">
+              <div class="social-badge-icon yt-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </div>
+              <div class="social-text-col">
+                <span class="social-platform-title">YouTube</span>
+                <span class="social-handle-text" data-var-text="youtube_handle">Bloxxerman1</span>
+              </div>
+              <span class="verified-badge mini">✓</span>
+            </div>
+
+            <div class="social-box ig-box">
+              <div class="social-badge-icon ig-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+              <div class="social-text-col">
+                <span class="social-platform-title">Instagram</span>
+                <span class="social-handle-text" data-var-text="instagram_handle">Mysteryuntoldd</span>
+              </div>
+              <span class="verified-badge mini">✓</span>
+            </div>
+          </div>
+          <p class="channel-subtext">Curious Math Paradoxes for Kids & Families</p>
+        </div>
+
+        <div class="cta-subscribe-box" id="subscribe-box">
+          <div class="cta-btn like-btn">
+            <span>❤️</span>
+            <span>LIKE</span>
+          </div>
+          <div class="cta-btn sub-btn">
+            <span>🔔</span>
+            <span>SUBSCRIBE</span>
+          </div>
+        </div>
+
+        <div class="comment-callout-card" id="comment-callout">
+          <span class="callout-emoji">💬</span>
+          <div class="callout-text">
+            <strong>Did you guess it before the timer ended?</strong>
+            <span>Tell us your answer in the comments below! 👇</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIO TRACKS -->
+    <!-- BGM Track (37s) -->
+    <audio 
+      id="bgm" 
+      src="assets/curious_mystery.mp3" 
+      data-var-src="bgm_src"
+      data-start="0" 
+      data-duration="37" 
+      data-track-index="10" 
+      data-volume="0.85">
+    </audio>
+
+    <!-- SFX: Countdown Ticks (5, 4, 3, 2, 1) on Track 11 -->
+    <audio id="sfx-tick5" src="assets/tick.wav" data-start="7.5" data-duration="0.09" data-track-index="11" data-volume="0.85"></audio>
+    <audio id="sfx-tick4" src="assets/tick.wav" data-start="8.6" data-duration="0.09" data-track-index="11" data-volume="0.85"></audio>
+    <audio id="sfx-tick3" src="assets/tick.wav" data-start="9.7" data-duration="0.09" data-track-index="11" data-volume="0.85"></audio>
+    <audio id="sfx-tick2" src="assets/tick.wav" data-start="10.8" data-duration="0.09" data-track-index="11" data-volume="0.85"></audio>
+    <audio id="sfx-tick1" src="assets/tick.wav" data-start="11.9" data-duration="0.09" data-track-index="11" data-volume="0.85"></audio>
+
+    <!-- SFX: Pops for Slices 1 to 4 on Track 12 -->
+    <audio id="sfx-pop1" src="assets/pop.wav" data-start="15.5" data-duration="0.12" data-track-index="12" data-volume="0.8"></audio>
+    <audio id="sfx-pop2" src="assets/pop.wav" data-start="17.0" data-duration="0.12" data-track-index="12" data-volume="0.8"></audio>
+    <audio id="sfx-pop3" src="assets/pop.wav" data-start="18.5" data-duration="0.12" data-track-index="12" data-volume="0.8"></audio>
+    <audio id="sfx-pop4" src="assets/pop.wav" data-start="20.0" data-duration="0.12" data-track-index="12" data-volume="0.8"></audio>
+
+    <!-- SFX: Solution Chime on Track 13 -->
+    <audio id="sfx-chime" src="assets/chime.wav" data-start="21.2" data-duration="1.80" data-track-index="13" data-volume="0.85"></audio>
+
+    <!-- SFX: Like & Subscribe Frame Sound on Track 14 -->
+    <audio id="sfx-sub" src="assets/chime.wav" data-start="33.0" data-duration="1.80" data-track-index="14" data-volume="0.75"></audio>
+
+  </div>
+
+  <script>
+    // Read HyperFrames runtime variables if supplied
+    try {
+      if (window.__hyperframes && typeof window.__hyperframes.getVariables === 'function') {
+        const v = window.__hyperframes.getVariables();
+        const elements = document.querySelectorAll("[data-var-text]");
+        for (let i = 0; i < elements.length; i++) {
+          const el = elements[i];
+          const k = el.getAttribute("data-var-text");
+          if (k && v[k] !== undefined) {
+            el.textContent = v[k];
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Variables init fallback", e);
+    }
+
+    // GSAP Paused Timeline according to HyperFrames specification
+    const tl = gsap.timeline({ paused: true });
+
+    // Scene 1: Hook & Problem Presentation (0s - 7.0s)
+    tl.fromTo("#hook-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 
+      0.0
+    );
+
+    tl.fromTo("#hook-big-circle", 
+      { scale: 0.7, opacity: 0 }, 
+      { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.4)" }, 
+      0.5
+    );
+
+    tl.fromTo("#hook-small-preview", 
+      { scale: 0, opacity: 0 }, 
+      { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.8)" }, 
+      1.8
+    );
+
+    tl.to("#hook-content", 
+      { opacity: 0, scale: 0.95, duration: 0.45, ease: "power2.in" }, 
+      6.55
+    );
+
+    // Scene 2: 5-to-1 Countdown Timer Challenge (7.0s - 14.0s)
+    tl.fromTo("#countdown-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, 
+      7.0
+    );
+
+    // Progress ring depletion (7.2s - 12.8s)
+    tl.fromTo("#timer-progress-ring", 
+      { strokeDashoffset: 0 }, 
+      { strokeDashoffset: 552.9, duration: 5.6, ease: "linear" }, 
+      7.2
+    );
+
+    // Count 5 (7.5s - 8.6s)
+    tl.fromTo("#cnt-5", 
+      { scale: 0.2, opacity: 0 }, 
+      { scale: 1.2, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 
+      7.5
+    );
+    tl.to("#cnt-5", { scale: 1.0, duration: 0.2 }, 7.85);
+    tl.to("#cnt-5", { scale: 1.4, opacity: 0, duration: 0.25, ease: "power2.in" }, 8.35);
+
+    // Count 4 (8.6s - 9.7s)
+    tl.fromTo("#cnt-4", 
+      { scale: 0.2, opacity: 0 }, 
+      { scale: 1.2, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 
+      8.6
+    );
+    tl.to("#cnt-4", { scale: 1.0, duration: 0.2 }, 8.95);
+    tl.to("#cnt-4", { scale: 1.4, opacity: 0, duration: 0.25, ease: "power2.in" }, 9.45);
+
+    // Count 3 (9.7s - 10.8s)
+    tl.fromTo("#cnt-3", 
+      { scale: 0.2, opacity: 0 }, 
+      { scale: 1.2, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 
+      9.7
+    );
+    tl.to("#cnt-3", { scale: 1.0, duration: 0.2 }, 10.05);
+    tl.to("#cnt-3", { scale: 1.4, opacity: 0, duration: 0.25, ease: "power2.in" }, 10.55);
+
+    // Count 2 (10.8s - 11.9s)
+    tl.fromTo("#cnt-2", 
+      { scale: 0.2, opacity: 0 }, 
+      { scale: 1.2, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 
+      10.8
+    );
+    tl.to("#cnt-2", { scale: 1.0, duration: 0.2 }, 11.15);
+    tl.to("#cnt-2", { scale: 1.4, opacity: 0, duration: 0.25, ease: "power2.in" }, 11.65);
+
+    // Count 1 (11.9s - 12.9s)
+    tl.fromTo("#cnt-1", 
+      { scale: 0.2, opacity: 0 }, 
+      { scale: 1.3, opacity: 1, duration: 0.35, ease: "back.out(2.2)" }, 
+      11.9
+    );
+    tl.to("#cnt-1", { scale: 1.0, duration: 0.2 }, 12.25);
+    tl.to("#cnt-1", { scale: 1.4, opacity: 0, duration: 0.2, ease: "power2.in" }, 12.65);
+
+    // TIME'S UP banner
+    tl.fromTo("#times-up-banner", 
+      { scale: 0.5, opacity: 0 }, 
+      { scale: 1.05, opacity: 1, duration: 0.35, ease: "elastic.out(1, 0.5)" }, 
+      12.7
+    );
+
+    tl.to("#countdown-content", 
+      { opacity: 0, scale: 0.95, duration: 0.35, ease: "power2.in" }, 
+      13.65
+    );
+
+    // Scene 3: 10-Year-Old Friendly Proof & Step-by-Step Drop (14.0s - 24.0s)
+    tl.fromTo("#proof-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 
+      14.05
+    );
+    tl.fromTo("#kid-banner", 
+      { y: -30, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.5)" }, 
+      14.25
+    );
+    tl.fromTo("#proof-big-circle", 
+      { scale: 0.8, opacity: 0 }, 
+      { scale: 1, opacity: 1, duration: 0.6, ease: "power2.out" }, 
+      14.6
+    );
+
+    // 4 Slices drop in with pop SFX (paced with 1.5s between drops for clear digestion!)
+    tl.fromTo("#item-p1", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 15.5);
+    tl.fromTo("#item-p2", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 17.0);
+    tl.fromTo("#item-p3", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 18.5);
+    tl.fromTo("#item-p4", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 20.0);
+
+    tl.fromTo("#proof-count-shout", 
+      { scale: 0.5, opacity: 0 }, 
+      { scale: 1.15, opacity: 1, duration: 0.55, ease: "elastic.out(1, 0.6)" }, 
+      21.2
+    );
+    tl.to("#proof-count-shout", { scale: 1.0, duration: 0.3 }, 21.8);
+
+    tl.to("#proof-content", 
+      { opacity: 0, scale: 0.95, duration: 0.4, ease: "power2.in" }, 
+      23.55
+    );
+
+    // Scene 4: The Math Rule & Winner Breakdown (24.0s - 32.0s)
+    tl.fromTo("#math-content", 
+      { opacity: 0, y: 30 }, 
+      { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 
+      24.05
+    );
+    tl.fromTo("#formula-left", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 24.5);
+    tl.fromTo("#formula-right", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 25.8);
+    tl.fromTo("#math-banner", { y: 30, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "back.out(1.4)" }, 27.2);
+
+    tl.to("#math-content", 
+      { opacity: 0, scale: 0.95, duration: 0.4, ease: "power2.in" }, 
+      31.55
+    );
+
+    // Scene 5: Final Frame - Like, Subscribe & Channel Handle (32.0s - 37.0s)
+    tl.fromTo("#subscribe-content", 
+      { opacity: 0, scale: 0.9 }, 
+      { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, 
+      32.05
+    );
+    tl.fromTo("#avatar-glow", 
+      { scale: 0 }, 
+      { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.6)" }, 
+      32.3
+    );
+    tl.fromTo("#channel-card", 
+      { y: 20, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 
+      32.6
+    );
+    tl.fromTo("#subscribe-box", 
+      { scale: 0.8, opacity: 0 }, 
+      { scale: 1.08, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, 
+      33.0
+    );
+    tl.to("#subscribe-box", { scale: 1.0, duration: 0.2 }, 33.45);
+
+    tl.fromTo("#comment-callout", 
+      { y: 30, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 
+      33.65
+    );
+
+    // Like button heart pulsation
+    tl.to(".like-btn", { scale: 1.06, duration: 0.25, yoyo: true, repeat: 3 }, 34.2);
+
+    // Register Timeline with HyperFrames and global preview API
+    window.__timelines = window.__timelines || {};
+    window.__timelines["puzzle-reel"] = tl;
+    window.tl = tl;
+
+    // Helper functions for live interactive preview
+    window.setVariables = function(v) {
+      if (!v) return;
+      const elements = document.querySelectorAll("[data-var-text]");
+      for (let i = 0; i < elements.length; i++) {
+        const el = elements[i];
+        const k = el.getAttribute("data-var-text");
+        if (k && v[k] !== undefined) {
+          el.textContent = v[k];
+        }
+      }
+    };
+
+    window.seekPreview = function(seconds) {
+      tl.seek(seconds);
+    };
+
+    window.playPreview = function() {
+      tl.play();
+    };
+
+    window.pausePreview = function() {
+      tl.pause();
+    };
+
+    // Seek to 0.5s for preview visibility
+    tl.seek(0.5);
+  </script>
+</body>
+</html>

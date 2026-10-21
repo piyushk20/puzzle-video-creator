@@ -1,0 +1,22 @@
+{
+  "name": "puzzle-video",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "HyperFrames Reusable Math Puzzle Video Shorts Generator",
+  "scripts": {
+    "start": "node server.js",
+    "preview": "hyperframes preview",
+    "render": "node render.js",
+    "render:all": "node render.js --all",
+    "render:pizza": "node render.js --puzzle pizza_area",
+    "render:eleven": "node render.js --puzzle eleven_trick",
+    "render:discount": "node render.js --puzzle discount_trap",
+    "render:squares": "node render.js --puzzle squares_grid",
+    "list": "node render.js --list",
+    "check": "hyperframes check"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "hyperframes": "^0.8.181"
+  }
+}
